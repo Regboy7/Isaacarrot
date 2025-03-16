@@ -1,6 +1,7 @@
-from app import create_app
+from flask import Blueprint
 
-app = create_app()
+main = Blueprint('main', __name__)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@main.route('/')
+def home():
+    return "Hello, Flask!"
