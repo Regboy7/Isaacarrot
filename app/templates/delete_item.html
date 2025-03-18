@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="delete-item-form">
+    <h1>Delete Item</h1>
+    <p>Are you sure you want to delete "{{ item.name }}"?</p>
+    <form action="{{ url_for('main.delete_item', id=item.id) }}" method="POST">
+        <button type="submit">Yes, Delete</button>
+        <a href="{{ url_for('main.home') }}">Cancel</a>
+    </form>
+</section>
+{% endblock %}

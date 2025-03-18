@@ -1,0 +1,28 @@
+<!-- templates/add_item.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Item - Produce App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Add New Item</h1>
+        <a href="{{ url_for('main.home') }}">Back to Home</a>
+    </header>
+
+    <section class="add-item-form">
+        <form action="{{ url_for('main.add_item') }}" method="post">
+            <label for="name">Item Name:</label>
+            <input type="text" id="name" name="name" required><br><br>
+
+            <label for="description">Item Description:</label>
+            <textarea id="description" name="description" required></textarea><br><br>
+
+            <button type="submit">Add Item</button>
+        </form>
+    </section>
+</body>
+</html>

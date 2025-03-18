@@ -1,5 +1,4 @@
 from flask_login import UserMixin
-from flask import Blueprint
 
 def construct_models(db):
 
