@@ -1,30 +1,40 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Item | My Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
 
-{% block title %}Home - Produce App{% endblock %}
+    <nav class="bg-blue-600 p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="text-white text-2xl font-bold">My Website</a>
+            <a href="/" class="text-white px-4">Back to Home</a>
+        </div>
+    </nav>
 
-{% block content %}
-    <section class="bg-white p-6 rounded shadow-lg">
-        <h1 class="text-2xl font-bold mb-4">Welcome to the Produce App</h1>
-        <p class="text-gray-700">Manage your items with ease.</p>
-    </section>
+    <main class="container mx-auto py-10">
+        <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-center mb-4">Add a New Item</h2>
+            <form action="/add_item" method="POST">
+                <label class="block text-gray-700">Item Name:</label>
+                <input type="text" name="name" required class="w-full p-2 border border-gray-300 rounded mt-1 mb-4">
 
-    <div class="flex justify-end mt-4">
-        <a href="{{ url_for('main.add_item') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">+ Add Item</a>
-    </div>
+                <label class="block text-gray-700">Description:</label>
+                <textarea name="description" rows="4" required class="w-full p-2 border border-gray-300 rounded mt-1 mb-4"></textarea>
 
-    <section class="mt-6">
-        <h2 class="text-xl font-bold mb-3">Items</h2>
-        <ul class="bg-white p-4 rounded shadow-lg">
-            {% for item in items %}
-                <li class="border-b py-2 flex justify-between">
-                    <span><strong>{{ item.name }}</strong>: {{ item.description }}</span>
-                    <form action="{{ url_for('main.delete_item', id=item.id) }}" method="POST" class="inline">
-                        <button class="text-red-500 hover:underline">Delete</button>
-                    </form>
-                </li>
-            {% else %}
-                <li class="text-gray-600">No items found.</li>
-            {% endfor %}
-        </ul>
-    </section>
-{% endblock %}
+                <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition">
+                    Add Item
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="text-center p-4 bg-blue-600 text-white mt-10">
+        &copy; 2025 My Website - Isaacarrot
+    </footer>
+
+</body>
+</html>

@@ -1,6 +1,11 @@
 from flask import Blueprint, flash, session
+from flask import Blueprint, request, jsonify
+from app.forms import RegisterForm 
+from flask_bcrypt import Bcrypt
 
-def construct_routes(db, Item):
+bcrypt = Bcrypt()
+
+def construct_routes(db, Item, User):
     from flask import render_template, redirect, url_for, request
     main = Blueprint('main', __name__)
 
@@ -10,14 +15,19 @@ def construct_routes(db, Item):
         items = Item.query.all()
         return render_template('home.html', items=items)
 
-    @main.route('/add', methods=['POST'])
+    @main.route('/add_item', methods=['GET', 'POST'])
     def add_item():
-        name = request.form.get('name')
-        description = request.form.get('description')
-        new_item = Item(name=name, description=description)
-        db.session.add(new_item)
-        db.session.commit()
-        return redirect(url_for('main.home'))
+        if request.method == 'POST':
+            name = request.form['name']
+            description = request.form['description']
+            new_item = Item(name=name, description=description)
+            db.session.add(new_item)
+            db.session.commit()
+            flash('Item added successfully!', 'success')
+            return redirect(url_for('main.home'))
+    
+        return render_template('add_item.html')
+
 
     @main.route('/login', methods=['GET', 'POST'])
     def login():
@@ -60,4 +70,16 @@ def construct_routes(db, Item):
         db.session.commit()
         flash('Item deleted successfully', 'danger')
         return redirect(url_for('home'))
+
+    @main.route('/register', methods=['GET', 'POST'])
+    def register():
+        form = RegisterForm()
+        if form.validate_on_submit():  # Checks if form is valid
+            hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+            new_user = User(email=form.email.data, password=hashed_password)
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Account created successfully!', 'success')
+            return redirect(url_for('login'))
+        return render_template('register.html', form=form)
     return main
