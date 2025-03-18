@@ -1,27 +1,16 @@
-from app import db, login_manager
 from flask_login import UserMixin
-from datetime import datetime
+from flask import Blueprint
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+def construct_models(db):
 
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(60), nullable=False)
+    class User(db.Model, UserMixin):
+        id = db.Column(db.Integer, primary_key=True)
+        username = db.Column(db.String(150), unique=True, nullable=False)
+        password = db.Column(db.String(150), nullable=False)
 
-    def __repr__(self):
-        return f"User('{self.username}', '{self.email}')"
+    class Item(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        name = db.Column(db.String(100), nullable=False)
+        description = db.Column(db.Text, nullable=False)
 
-class Item(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    category = db.Column(db.String(50), nullable=False)
-    date_added = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def __repr__(self):
-        return f"Item('{self.name}', '{self.category}', '{self.price}')"
+    return User, Item
