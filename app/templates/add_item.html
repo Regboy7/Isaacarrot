@@ -1,28 +1,30 @@
-<!-- templates/add_item.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Item - Produce App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-    <header>
-        <h1>Add New Item</h1>
-        <a href="{{ url_for('main.home') }}">Back to Home</a>
-    </header>
+{% extends 'base.html' %}
 
-    <section class="add-item-form">
-        <form action="{{ url_for('main.add_item') }}" method="post">
-            <label for="name">Item Name:</label>
-            <input type="text" id="name" name="name" required><br><br>
+{% block title %}Home - Produce App{% endblock %}
 
-            <label for="description">Item Description:</label>
-            <textarea id="description" name="description" required></textarea><br><br>
-
-            <button type="submit">Add Item</button>
-        </form>
+{% block content %}
+    <section class="bg-white p-6 rounded shadow-lg">
+        <h1 class="text-2xl font-bold mb-4">Welcome to the Produce App</h1>
+        <p class="text-gray-700">Manage your items with ease.</p>
     </section>
-</body>
-</html>
+
+    <div class="flex justify-end mt-4">
+        <a href="{{ url_for('main.add_item') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">+ Add Item</a>
+    </div>
+
+    <section class="mt-6">
+        <h2 class="text-xl font-bold mb-3">Items</h2>
+        <ul class="bg-white p-4 rounded shadow-lg">
+            {% for item in items %}
+                <li class="border-b py-2 flex justify-between">
+                    <span><strong>{{ item.name }}</strong>: {{ item.description }}</span>
+                    <form action="{{ url_for('main.delete_item', id=item.id) }}" method="POST" class="inline">
+                        <button class="text-red-500 hover:underline">Delete</button>
+                    </form>
+                </li>
+            {% else %}
+                <li class="text-gray-600">No items found.</li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock %}

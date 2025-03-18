@@ -19,13 +19,6 @@ def construct_routes(db, Item):
         db.session.commit()
         return redirect(url_for('main.home'))
 
-    @main.route('/delete/<int:id>')
-    def delete_item(id):
-        item = Item.query.get(id)
-        db.session.delete(item)
-        db.session.commit()
-        return redirect(url_for('main.home'))
-    
     @main.route('/login', methods=['GET', 'POST'])
     def login():
         if request.method == 'POST':
