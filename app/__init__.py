@@ -1,12 +1,19 @@
 from flask import Flask
-from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
-app = Flask(__name__)
-app.config.from_object(Config)
+db = SQLAlchemy()
+login_manager = LoginManager()
 
-db = SQLAlchemy(app)
-login = LoginManager(app)
+def create_app():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = 'your_secret_key'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
-from app import routes, models
+    db.init_app(app)
+    login_manager.init_app(app)
+
+    from app.routes import main
+    app.register_blueprint(main)
+
+    return app
